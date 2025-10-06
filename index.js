@@ -1,87 +1,72 @@
-class Counter {
-    constructor() {
-        this.counterElement = document.getElementById('counter');
-        this.speedIncreaseBtn = document.getElementById('speedIncrease');
-        this.speedDecreaseBtn = document.getElementById('speedDecrease');
-        this.resetBtn = document.getElementById('reset');
-        this.minutes = 0;
-        this.seconds = 0;
-        this.isRunning = false;
+document.addEventListener('DOMContentLoaded', function() {
+    // Получаем элементы DOM
+    const body = document.body;
+    const counterDisplay = document.querySelector('.counter-display');
+    const speedPlusBtn = document.querySelector('.speed-plus');
+    const speedMinusBtn = document.querySelector('.speed-minus');
+    const resetBtn = document.querySelector('.reset');
+    
+    // Переменные для работы счетчика
+    let minutes = 0;
+    let seconds = 0;
+    let timerInterval = null;
+    
+    // Функция для обновления отображения счетчика
+    function updateCounterDisplay() {
+        const formattedMinutes = minutes.toString().padStart(2, '0');
+        const formattedSeconds = seconds.toString().padStart(2, '0');
+        counterDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
+    }
+    
+    // Функция для запуска счетчика
+    function startCounter() {
+        if (timerInterval) return;
         
-        this.initEventListeners();
-        this.updateDisplay();
-    }
-
-    initEventListeners() {
-        // Обработчик для кнопки Speed +
-        this.speedIncreaseBtn.addEventListener('click', () => {
-            this.increment();
-            this.setSpeedPlusStyle();
-        });
-
-        // Обработчик для кнопки Speed -
-        this.speedDecreaseBtn.addEventListener('click', () => {
-            this.decrement();
-            this.setSpeedMinusStyle();
-        });
-
-        // Обработчик для кнопки Reset
-        this.resetBtn.addEventListener('click', () => {
-            this.reset();
-            this.setDefaultStyle();
-        });
-    }
-
-    increment() {
-        this.seconds++;
-        if (this.seconds >= 60) {
-            this.seconds = 0;
-            this.minutes++;
-        }
-        this.updateDisplay();
-    }
-
-    decrement() {
-        this.seconds--;
-        if (this.seconds < 0) {
-            this.seconds = 59;
-            this.minutes--;
-            if (this.minutes < 0) {
-                this.minutes = 0;
-                this.seconds = 0;
+        timerInterval = setInterval(function() {
+            seconds++;
+            if (seconds >= 60) {
+                seconds = 0;
+                minutes++;
             }
+            updateCounterDisplay();
+        }, 1000);
+    }
+    
+    // Функция для остановки счетчика
+    function stopCounter() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
         }
-        this.updateDisplay();
     }
-
-    reset() {
-        this.minutes = 0;
-        this.seconds = 0;
-        this.updateDisplay();
+    
+    // Функция для сброса состояния
+    function resetState() {
+        stopCounter();
+        minutes = 0;
+        seconds = 0;
+        updateCounterDisplay();
+        body.style.backgroundColor = '#808080'; // Серый фон
+        counterDisplay.style.color = '#000'; // Черные цифры
     }
+    
+    // Speed +
+    speedPlusBtn.addEventListener('click', function() {
+        startCounter();
+        body.style.backgroundColor = '#90EE90'; // Светло-зеленый фон
+        counterDisplay.style.color = '#FFB6C1'; // Светло-красные цифры
+    });
+    
+    // Обработчик для кнопки Speed -
+    speedMinusBtn.addEventListener('click', function() {
+        startCounter();
+        body.style.backgroundColor = '#FFB6C1'; // Светло-красный фон
+        counterDisplay.style.color = '#90EE90'; // Светло-зеленые цифры
+    });
+    
+    // Обработчик для кнопки Reset
+    resetBtn.addEventListener('click', resetState);
+    
 
-    updateDisplay() {
-        const formattedMinutes = this.minutes.toString().padStart(2, '0');
-        const formattedSeconds = this.seconds.toString().padStart(2, '0');
-        this.counterElement.textContent = ${formattedMinutes}:${formattedSeconds};
-    }
-
-    setSpeedPlusStyle() {
-        document.body.classList.remove('speed-minus');
-        document.body.classList.add('speed-plus');
-    }
-
-    setSpeedMinusStyle() {
-        document.body.classList.remove('speed-plus');
-        document.body.classList.add('speed-minus');
-    }
-
-    setDefaultStyle() {
-        document.body.classList.remove('speed-plus', 'speed-minus');
-    }
-}
-
-// Инициализация счетчика при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
-    new Counter();
+    resetState();
 });

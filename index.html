@@ -3,18 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Счетчик</title>
+    <title>Счетчик с изменением цвета</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <div class="container">
-        <div class="counter" id="counter">00:00</div>
-        <div class="buttons">
-            <button class="btn speed-decrease" id="speedDecrease">Speed -</button>
-            <button class="btn reset" id="reset">Reset</button>
-            <button class="btn speed-increase" id="speedIncrease">Speed +</button>
+        <h1>Интерактивный счетчик</h1>
+        <div class="counter-display">00:00</div>
+        
+        <div class="buttons-container">
+            <button class="btn speed-minus">Speed -</button>
+            <button class="btn reset">Reset</button>
+            <button class="btn speed-plus">Speed +</button>
+        </div>
+        
+        <div class="instructions">
+            <h3>Инструкция:</h3>
+            <ul>
+                <li><strong>Speed +</strong> - зеленый фон, красные цифры</li>
+                <li><strong>Speed -</strong> - красный фон, зеленые цифры</li>
+                <li><strong>Reset</strong> - серый фон, черные цифры</li>
+            </ul>
         </div>
     </div>
+
     <script src="index.js"></script>
 </body>
 </html>
